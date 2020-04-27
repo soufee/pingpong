@@ -19,7 +19,7 @@ public class Testing {
 
 class PingPong extends Thread {
     private String text;
-    private int obj = 10;
+    private int counter = 10;
     private final Object lock;
 
     public PingPong(String text, Object lock) {
@@ -29,13 +29,12 @@ class PingPong extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (counter>0) {
             synchronized (lock) {
-                if (obj == 0) return;
-                System.out.println(obj + ": " + text);
+                System.out.println(counter + ": " + text);
+                counter--;
             }
             try {
-                obj--;
                 Thread.sleep(100);
             } catch (Exception e) {
             }
