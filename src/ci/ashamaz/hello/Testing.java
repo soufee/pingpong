@@ -6,38 +6,36 @@ package ci.ashamaz.hello;
 * */
 
 public class Testing {
-    public static void main(String[] args) {
-        final Object object = new Object();
+    private final static Object lock = new Object();
 
-        PingPong ping = new PingPong("ping", object);
-        PingPong pong = new PingPong("pong", object);
+    public static void main(String[] args) {
+
+        PingPong ping = new PingPong("ping");
+        PingPong pong = new PingPong("pong");
         ping.start();
         pong.start();
     }
+    static class PingPong extends Thread {
+        private String mess;
 
-}
+        public PingPong(String mess) {
+            this.mess = mess;
+        }
 
-class PingPong extends Thread {
-    private String text;
-    private int counter = 10;
-    private final Object lock;
+        @Override
+        public void run() {
+            for (int i = 1; i < 111; i++) {
+                synchronized (lock) {
+                    System.out.println(i + " " + mess);
+                    lock.notifyAll();
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
 
-    public PingPong(String text, Object lock) {
-        this.text = text;
-        this.lock = lock;
-    }
-
-    @Override
-    public void run() {
-        while (counter>0) {
-            synchronized (lock) {
-                System.out.println(counter + ": " + text);
-                counter--;
-            }
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
+                    }
+                }
             }
         }
     }
 }
+
