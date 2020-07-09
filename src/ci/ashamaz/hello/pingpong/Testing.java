@@ -1,4 +1,4 @@
-package ci.ashamaz.hello;
+package ci.ashamaz.hello.pingpong;
 
 /*
 * Известная задачка на собеседованиях: Сделать пинг-понг между двумя потоками
@@ -14,13 +14,6 @@ public class Testing {
         PingPong pong = new PingPong("pong");
         ping.start();
         pong.start();
-        try {
-          //  ping.join();
-        //    pong.join();
-          //  lock.notifyAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
     static class PingPong extends Thread {
         private String mess;
@@ -31,7 +24,7 @@ public class Testing {
 
         @Override
         public void run() {
-            for (int i = 1; i < 10; i++) {
+            for (int i = 1; i <= 10; i++) {
                 synchronized (lock) {
                     System.out.println(i + " " + mess);
                     lock.notifyAll();
